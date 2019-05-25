@@ -26,7 +26,7 @@ tens = {
     60: "sixty",
     70: "seventy",
     80: "eighty",
-    90: "ninty"
+    90: "ninety"
 }
 
 hundreds = "onehundred"
@@ -45,7 +45,10 @@ def count(n):
         hplace = n // 100
         tplace = (n - (100 * hplace)) // 10
         uplace = n - hplace * 100 - tplace * 10
-        hl = count(hplace) + len('hundredand') + count(tplace * 10) + count(uplace)
+        hl = count(hplace) + len('hundred')
+        if tplace or uplace:
+            hl += len('and') + count(tplace * 10 + uplace)  # + count(uplace)
+        # hl = count(hplace) + len('hundredand') + count(tplace * 10 + uplace)  # + count(uplace)
         return hl
     if n < 100 and n % 10 == 0:
         return len(tens[n])
@@ -59,11 +62,12 @@ def count(n):
 
 if __name__ == "__main__":
     tests = {
-        293: "twohundredandnintythree",
+        293: "twohundredandninetythree",
         531: "fivehundredandthirtyone",
         961: "ninehundredandsixtyone",
         53: "fiftythree",
-        685: "sixhundredandeightyfive"
+        685: "sixhundredandeightyfive",
+        517: "fivehundredandseventeen"
     }
 
     for num, s in tests.items():
@@ -73,3 +77,8 @@ if __name__ == "__main__":
     for i in range(1, 1001):
         S += count(i)
     print(S)
+    # for i in tqdm(range(1, 1001)):
+    #     x = count(i)
+    #     y = len(''.join(spell(i, words)))
+    #     if x != y:
+    #         print(i, spell(i, words))
