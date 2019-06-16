@@ -1,5 +1,7 @@
 from math import sqrt
 import numpy as np
+from itertools import permutations
+from tqdm import tqdm
 
 
 def isprime(n):
@@ -63,3 +65,32 @@ def carry_sum(l):
     _sum = int(x[-1])
     carry = int(x[:-1])
     return carry, _sum
+
+
+def pandigital_primes(n):
+    digits = list(range(1, n + 1))
+    perms = []
+    for perm in tqdm(permutations(digits)):
+        n = int(''.join(map(str, perm)))
+        if isprime(n):
+            perms.append(n)
+    return perms
+
+
+def pandigitals(low, high):
+    digits = list(range(low, high + 1))
+    for perm in permutations(digits):
+        if perm[0] != 0:
+            yield perm
+
+
+def is_triangle(n):
+    return (sqrt(1 + 8 * n) - 1) % 2 == 0
+
+
+def is_pentagonal(n):
+    return (sqrt(1 + 24 * n) + 1) % 6 == 0
+
+
+def is_hexagonal(n):
+    return (sqrt(1 + 8 * n) + 1) % 4 == 0
